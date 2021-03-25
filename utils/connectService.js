@@ -14,7 +14,7 @@ async function connectService() {
 
             admin.initializeApp({
                 credential: admin.credential.cert(ServiceAccountKeyBlackboardAdmin),
-                storageBucket: "to-do-list-94aba.appspot.com",
+                databaseURL: "https://to-do-list-94aba-default-rtdb.firebaseio.com"
             });
         }
 

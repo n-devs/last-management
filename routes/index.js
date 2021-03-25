@@ -10,11 +10,13 @@ router.get('/', function (req, res, next) {
   ConnectService().then(service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
+
+  
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
         // ...
-        const decoded = jwt_decode(user._lat)
+        // const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const userRef = db.collection('users').doc(uid);
         const usersRef = db.collection('users')
@@ -35,7 +37,7 @@ router.get('/', function (req, res, next) {
         const notification_list = []
 
         function Progress(projectId) {
-
+        console.log("projectId",projectId);
           return new Promise(async (resolve, reject) => {
             const todo = await todosRef.where('projectId', '==', projectId).get();
             // console.log(_doc.id, '=>', _doc.data());
@@ -75,11 +77,7 @@ router.get('/', function (req, res, next) {
 
         notifications.forEach(_doc => {
 
-          // console.log(progress);
           notification_list.push({ ["uid"]: _doc.id, ..._doc.data() })
-          // // ,["progress"]: (todoStatus.length / todoAll.length) *100
-          // console.log(todoStatus.length, todoAll.length, todo.length);
-
 
         });
 
@@ -87,19 +85,10 @@ router.get('/', function (req, res, next) {
           if (_doc.id !== uid) {
             users_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["owner"]: _user.data() })
           }
-
-          // console.log(_doc.id, '=>', _doc.data());
         });
 
         projects.forEach(_doc => {
-
-
-          // console.log(progress);
           project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
-          // // ,["progress"]: (todoStatus.length / todoAll.length) *100
-          // console.log(todoStatus.length, todoAll.length, todo.length);
-
-
         });
 
 
@@ -109,35 +98,44 @@ router.get('/', function (req, res, next) {
           // console.log('No such document!');
           res.redirect('/login')
         } else {
-          // console.log(project_list);
-          // console.log('Document data:', users_list);
-          // const progress = []
+
           const project = []
 
-          project_list.map(_project => {
-            Progress(_project.uid).then(_progress => {
-              project.push({ ..._project, ["progress"]: `${_progress._progress}`, ["todos"]: _progress.todos, ["title"]: _progress.title })
-              // console.log(_progress);
+          if(project_list.length === 0) {
+            res.render('index', {
+              title: 'Project Dashboard',
+              header: "Dashboard",
+              user: _user.data(),
+              // admin: decoded.admin,
+              users_list: users_list,
+              project_list: [],
+              notification_list: notification_list.length === 0 ? []:notification_list
+            });
+          }else{
+            project_list.map(_project => {
+              Progress(_project.uid).then(_progress => {
+                project.push({ ..._project, ["progress"]: `${_progress._progress}`, ["todos"]: _progress.todos, ["title"]: _progress.title })
+                // console.log(_progress);
+                console.log(5);
+                if (project.length === project_list.length) {
 
-              if (project.length === project_list.length) {
-                console.log(notification_list);
-
-                res.render('index', {
-                  title: 'Project Dashboard',
-                  header: "Dashboard",
-                  user: _user.data(),
-                  admin: decoded.admin,
-                  users_list: users_list,
-                  project_list: project,
-                  notification_list: notification_list
-                });
-              }
+                  console.log(notification_list);
+                  console.log(6);
+                  res.render('index', {
+                    title: 'Project Dashboard',
+                    header: "Dashboard",
+                    user: _user.data(),
+                    // admin: decoded.admin,
+                    users_list: users_list,
+                    project_list: project,
+                    notification_list: notification_list
+                  });
+                }
+              })
             })
-          })
-
-
+          }
+      
         }
-
 
       } else {
         // User is signed out

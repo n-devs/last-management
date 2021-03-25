@@ -34,6 +34,7 @@ router.post('/login', function (req, res, next) {
         .catch((error) => {
           var errorCode = error.code;
           var errorMessage = error.message;
+          console.log(errorMessage);
           res.render('login', { title: 'Todolist Login', isvalid: true, message: error.message });
         });
 

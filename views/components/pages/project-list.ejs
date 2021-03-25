@@ -1,0 +1,363 @@
+<div class="section-body">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <ul class="nav nav-tabs page-header-tab">
+                        <li class="nav-item"><a class="nav-link active  show " data-toggle="tab"
+                                href="#Project-OnGoing">OnGoing</a></li>
+                        <li class="nav-item"><a class="nav-link show " data-toggle="tab"
+                                href="#Project-UpComing">UpComing</a></li>
+                        <li class="nav-item"><a class="nav-link show " data-toggle="tab" href="#Project-add">Add</a>
+                        </li>
+                    </ul>
+                    <div class="header-action d-md-flex">
+                        <div class="input-group mr-2">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-body mt-3">
+    <div class="container-fluid">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="Project-OnGoing" role="tabpanel">
+                <div class="row">
+                    <% for(var i=0; i < project_list.length; i++) { %>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <%= project_list[i].projectName %>
+                                    </h3>
+                                    <div class="card-options">
+                                        <label class="custom-switch m-0">
+                                            <!-- <input type="checkbox" value="1" class="custom-switch-input" checked> -->
+                                            <!-- <span class="custom-switch-indicator"></span> -->
+                                        </label>
+                                        <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
+                                                class="fe fe-chevron-up"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <span class="tag tag-<%= project_list[i].color %> mb-3">
+                                        <%= project_list[i].projectName %>
+                                    </span>
+                                    <p></p>
+                                    <div class="row">
+                                        <div class="col-5 py-1"><strong>Created:</strong></div>
+                                        <div class="col-7 py-1">
+                                            <%= project_list[i].date.end %>
+                                        </div>
+                                        <div class="col-5 py-1"><strong>Creator:</strong></div>
+                                        <div class="col-7 py-1">
+                                            <%= project_list[i].owner.displayName %>
+                                        </div>
+                                        <div class="col-5 py-1"><strong>Todos:</strong></div>
+                                        <div class="col-7 py-1"><strong><%= project_list[i].todos %></strong></div>
+                                        <div class="col-5 py-1"><strong></strong></div>
+                                        <div class="col-7 py-1"><strong></strong></div>
+                                        <div class="col-5 py-1"><strong></strong></div>
+                                        <div class="col-7 py-1"><strong></strong></div>
+                                        <div class="col-5 py-1"><strong>Team:</strong></div>
+                                        <div class="col-7 py-1">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <% for(var i_user=0; i_user < project_list[i].users.length; i_user++) {
+                                                    %>
+                                                    <img class="avatar avatar-sm"
+                                                        src="<%= project_list[i].users[i_user].photoURL %>"
+                                                        data-toggle="tooltip" title=""
+                                                        data-original-title="<%= project_list[i].users[i_user].displayName %>" />
+                                                    <% } %>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="clearfix">
+                                        <div class="float-left"><strong><%= project_list[i].progress %>%</strong></div>
+                                        <div class="float-right"><small class="text-muted">Progress</small></div>
+                                    </div>
+                                    <div class="progress progress-xs">
+                                        <div class="progress-bar bg-red" role="progressbar" style="width: <%= project_list[i].progress %>%"
+                                            aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="Project-UpComing" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped table-vcenter mb-0 text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Owner</th>
+                                                <th>Milestone</th>
+                                                <th class="w100">Start</th>
+                                                <th class="w100">End</th>
+                                                <th>Priority</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i=0; i < project_list.length; i++) { %>
+                                                <tr>
+                                                    <td><img src="<%= project_list[i].owner.photoURL %>" alt="Avatar"
+                                                            class="w30 rounded-circle mr-2"> <span>
+                                                            <%= project_list[i].owner.displayName %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <%= project_list[i].milestone %>
+                                                    </td>
+                                                    <td>
+                                                        <%= project_list[i].date.start %>
+                                                    </td>
+                                                    <td>
+                                                        <%= project_list[i].date.end %>
+                                                    </td>
+                                                    <td>
+
+
+                                                        <% switch (project_list[i].priority) { case 'High' : %>
+                                                            <span class="text-danger">
+                                                                <%= project_list[i].priority %>
+                                                            </span>
+                                                            <% break; case 'Medium' : %>
+                                                                <span class="text-primary">
+                                                                    <%= project_list[i].priority %>
+                                                                </span>
+                                                    </td>
+                                                    <% break; case 'None' : %>
+                                                        <span class="text-secondary">
+                                                            <%= project_list[i].priority %>
+                                                        </span></td>
+                                                        <% break; } %>
+                                                            </td>
+
+                                                </tr>
+                                                <% } %>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="Project-add" role="tabpanel">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add</h3>
+                        <div class="card-options ">
+                            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
+                                    class="fe fe-chevron-up"></i></a>
+                            <a href="#" class="card-options-remove" data-toggle="card-remove"><i
+                                    class="fe fe-x"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Project Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <input id="projectName" type="text" class="form-control" name="projectName">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Color <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <select class="form-control show-tick" id="color">
+                                    <option value="gray">Select</option>
+                                    <option value="blue">blue</option>
+                                    <option value="azure">azure</option>
+                                    <option value="indigo">indigo</option>
+                                    <option value="purple">purple</option>
+                                    <option value="pink">pink</option>
+                                    <option value="red">red</option>
+                                    <option value="orange">orange</option>
+                                    <option value="yellow">yellow</option>
+                                    <option value="lime">lime</option>
+                                    <option value="green">green</option>
+                                    <option value="teal">teal</option>
+                                    <option value="cyan">cyan</option>
+                                    <option value="white">white</option>
+                                    <option value="gray">gray</option>
+                                    <option value="gray-dark">gray-dark</option>
+                                    <option value="primary">primary</option>
+                                    <option value="secondary">secondary</option>
+                                    <option value="success">success</option>
+                                    <option value="info">info</option>
+                                    <option value="warning">warning</option>
+                                    <option value="danger">danger</option>
+                                    <option value="light">light</option>
+                                    <option value="dark">dark</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Milestone<span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <input id="milestone" type="text" class="form-control" name="milestone">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Priority <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <select class="form-control show-tick" id="priority">
+                                    <option value="None"></option>Select</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Description <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <textarea id="description" rows="4" class="form-control no-resize" id="detail"
+                                    placeholder="Please type what you want..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Select Team <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <table id="table" data-toggle="table" data-toolbar="#toolbar" data-height="460"
+                                    data-search="true" data-click-to-select="true" data-url="/user-list">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="state" data-checkbox="true"></th>
+                                            <th data-field="uid">User ID</th>
+                                            <!-- <th data-field="photoURL" data-sortable="true">Photo</th> -->
+                                            <th data-field="displayName" data-sortable="true">User Name</th>
+                                            <th data-field="email" data-sortable="true">Email</th>
+                                        </tr>
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Due <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <div class="input-daterange input-group" data-provide="datepicker">
+                                    <input type="text" class="form-control" name="start" id="date-start">
+                                    <span class="input-group-addon"> to </span>
+                                    <input type="text" class="form-control" name="end" id="date-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"></label>
+                            <div class="col-md-7">
+                                <button id="showSelectedRows" type="button" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-outline-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-body">
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+
+
+<script>
+
+
+
+    var $table = $('#table');
+    // var $table = document.getElementById('myTable')
+
+
+    function getRowSelections() {
+        // console.log($table);
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row;
+        })
+    }
+
+    $('#showSelectedRows').click(function () {
+        var $projectName = $('#projectName').val()
+        var selectedRows = getRowSelections();
+        var selectedItems = '\n';
+        $.each(selectedRows, function (index, value) {
+            selectedItems += value + '\n';
+        });
+
+        console.log($projectName);
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            ["projectName"]: $projectName,
+            ["color"]: $('#color').val(),
+            ["priority"]: $('#priority').val(),
+            ["milestone"]: $('#milestone').val(),
+            ["detail"]: $('#detail').val(),
+            ["users"]: selectedRows,
+            ["owner"]: {
+                uid: selectedRows[0].owner.uid,
+                displayName: selectedRows[0].owner.displayName,
+                photoURL: selectedRows[0].owner.photoURL,
+            },
+            ["date"]: {
+                ["start"]: $('#date-start').val(),
+                ["end"]: $('#date-end').val()
+            }
+        });
+
+        console.log(raw);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+       
+        fetch(`/project-list`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                window.location.reload()
+                // console.log(result)
+            })
+            .catch(error => console.log('error', error));
+
+        // alert('The following products are selected: ' + selectedItems);
+    });
+</script>

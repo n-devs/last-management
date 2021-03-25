@@ -1,0 +1,162 @@
+<div id="page_top" class="section-body top_dark">
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="left">
+                <a href="javascript:void(0)" class="icon menu_toggle mr-3"><i class="fa  fa-align-left"></i></a>
+                <h1 class="page-title">
+                    <%= header %>
+                </h1>
+            </div>
+            <div class="right">
+                <!-- <div class="input-icon xs-hide mr-4">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-icon-addon"><i class="fe fe-search"></i></span>
+                </div> -->
+                <div class="notification d-flex">
+                    <div class="dropdown d-flex">
+                        <!-- <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-2" data-toggle="dropdown"><i class="fa fa-language"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                    <a class="dropdown-item" href="#"><img class="w20 mr-2" src="../assets/images/flags/us.svg">English</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><img class="w20 mr-2" src="../assets/images/flags/es.svg">Spanish</a>
+                    <a class="dropdown-item" href="#"><img class="w20 mr-2" src="../assets/images/flags/jp.svg">japanese</a>
+                    <a class="dropdown-item" href="#"><img class="w20 mr-2" src="../assets/images/flags/bl.svg">France</a>
+                </div> -->
+                    </div>
+                    <div class="dropdown d-flex">
+                        <!-- <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-2"
+                            data-toggle="dropdown"><i class="fa fa-envelope"></i><span
+                                class="badge badge-success nav-unread"></span></a> -->
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <ul class="right_chat list-unstyled w350 p-0">
+                                <li class="online">
+                                    <a href="javascript:void(0);" class="media">
+                                        <img class="media-object" src="../assets/images/xs/avatar4.jpg" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Donald Gardner</span>
+                                            <div class="message">It is a long established fact that a
+                                                reader
+                                            </div>
+                                            <small>11 mins ago</small>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="online">
+                                    <a href="javascript:void(0);" class="media">
+                                        <img class="media-object " src="../assets/images/xs/avatar5.jpg" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Wendy Keen</span>
+                                            <div class="message">There are many variations of passages
+                                                of
+                                                Lorem Ipsum</div>
+                                            <small>18 mins ago</small>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="offline">
+                                    <a href="javascript:void(0);" class="media">
+                                        <img class="media-object " src="../assets/images/xs/avatar2.jpg" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Matt Rosales</span>
+                                            <div class="message">Contrary to popular belief, Lorem Ipsum
+                                                is
+                                                not simply</div>
+                                            <small>27 mins ago</small>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="online">
+                                    <a href="javascript:void(0);" class="media">
+                                        <img class="media-object " src="../assets/images/xs/avatar3.jpg" alt="">
+                                        <div class="media-body">
+                                            <span class="name">Phillip Smith</span>
+                                            <div class="message">It has roots in a piece of classical
+                                                Latin
+                                                literature from 45 BC</div>
+                                            <small>33 mins ago</small>
+                                            <span class="badge badge-outline status"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="dropdown-item text-center text-muted-dark readall">Mark
+                                all as
+                                read</a>
+                        </div>
+                    </div>
+                    <div class="dropdown d-flex">
+                        <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-2"
+                            data-toggle="dropdown"><i class="fa fa-bell"></i><span
+                                class="badge badge-primary nav-unread"></span></a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <ul class="list-unstyled feeds_widget">
+                                <% for(var i=0; i < notification_list.length; i++) { %>
+                                    <li>
+                                        <div class="feeds-left"><img class="avatar avatar-sm" src="<%= notification_list[i].photoURL %>" data-toggle="tooltip" title="" data-original-title="n-devs"></div>
+                                        <div class="feeds-body">
+                                            <h4 class="title text-danger"><%= notification_list[i].title %><small
+                                                    class="float-right text-muted"><%= notification_list[i].date %></small></h4>
+                                            <small> <%= notification_list[i].detail %></small>
+                                        </div>
+                                    </li>
+                                    <% } %>
+                              
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="dropdown-item text-center text-muted-dark readall">Mark
+                                all as
+                                read</a>
+                        </div>
+                    </div>
+                    <div class="dropdown d-flex">
+                        <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-2"
+                            data-toggle="dropdown"><i class="fa fa-user"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" href="/page-profile"><i class="dropdown-icon fe fe-user"></i>
+                                Profile</a>
+                            <a class="dropdown-item" href="/app-setting"><i class="dropdown-icon fe fe-settings"></i>
+                                Settings</a>
+                            <!-- <a class="dropdown-item" href="javascript:void(0)"><span class="float-right"><span
+                                        class="badge badge-primary">6</span></span><i
+                                    class="dropdown-icon fe fe-mail"></i> Inbox</a> -->
+                            <a class="dropdown-item" href="/app-chat"><i class="dropdown-icon fe fe-send"></i>
+                                Message</a>
+                            <div class="dropdown-divider"></div>
+                            <!-- <a class="dropdown-item" href="javascript:void(0)"><i
+                                    class="dropdown-icon fe fe-help-circle"></i> Need help?</a> -->
+                            <a class="dropdown-item" onclick="SignOut()"><i class="dropdown-icon fe fe-log-out"></i>
+                                Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function SignOut() {
+        var myHeaders = new Headers();
+        // myHeaders.append("Content-Type", "application/json");
+
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("/logout", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                window.location.reload()
+                console.log(result)
+            })
+            .catch(error => console.log('error', error));
+    }
+
+</script>

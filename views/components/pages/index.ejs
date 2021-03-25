@@ -1,0 +1,70 @@
+<% 
+
+const planned=[]; const completed=[]; const inProgress=[]; project_list.map(list=> {
+
+if(list.title === "Planned") {
+planned.push(list)
+}else if(list.title === "Completed") {
+completed.push(list)
+}else if(list.title === "In Progress"){
+inProgress.push(list)
+}
+})
+
+%> 
+
+<div class="section-body mt-3">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="mb-4">
+                    <h4>Welcome</h4>
+                    <small></a></small>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix row-deck">
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Project All (รวม)</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="number mb-0 font-32" id="work-all"><%= project_list.length  %> </h5>
+                        <span class="font-12">Measure How Fast... <a
+                                href="#">More</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Project In Progress (ยังไม่เส็จ)</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="number mb-0 font-32" id="work-on"><%= inProgress.length  %> </h5>
+                        <span class="font-12">Measure How Fast... <a
+                                href="#">More</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Project Completed (เส็จแล้ว)</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="number mb-0 font-32" id="work-off"><%= completed.length  %> </h5>
+                        <span class="font-12">Measure How Fast... <a
+                                href="#">More</a></span>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<%  %> 

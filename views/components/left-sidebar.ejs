@@ -1,0 +1,64 @@
+<div id="left-sidebar" class="sidebar ">
+    <h5 class="brand-name">To-do list <a href="javascript:void(0)" class="menu_option float-right"><i
+                class="icon-grid font-16" data-toggle="tooltip" data-placement="left"
+                title="Grid & List Toggle"></i></a></h5>
+    <nav id="left-sidebar-nav" class="sidebar-nav">
+        <ul class="metismenu">
+            <li class="g_heading">Project</li>
+            <li id="index"><a href="/"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
+            </li>
+            <li id="project-list"><a href="/project-list"><i class="fa fa-list-ol"></i><span>Project list</span></a>
+            </li>
+            <li id="project-taskboard"><a href="/project-taskboard"><i
+                        class="fa fa-calendar-check-o"></i><span>Taskboard</span></a>
+            </li>
+            <!---delete ticket list and ticket detail-->
+
+            <li id="project-todo"><a href="/project-todo"><i class="fa fa-check-square-o"></i><span>Todo List</span></a>
+            </li>
+            <li class="g_heading">App</li>
+            <li id="app-calendar"><a href="/app-calendar"><i class="fa fa-calendar"></i><span>Calendar</span></a></li>
+            <%if(admin){%>
+                <li id="app-contact"><a href="/app-contact"><i class="fa fa-address-book"></i><span>Contact</span></a>
+                </li>
+                <!--delete fileManager-->
+                <li id="app-setting"><a href="/app-setting"><i class="fa fa-gear"></i><span>Setting</span></a></li>
+                <!--delete gallory-->
+                <%}%>
+                    <!--delete All Authentication-->
+        </ul>
+        </li>
+        <!-- <li class="g_heading">Support</li> -->
+        <!-- <li><a href="javascript:void(0)"><i class="fa fa-support"></i><span>Need Help?</span></a></li> -->
+        <!-- <li><a href="javascript:void(0)"><i class="fa fa-tag"></i><span>ContactUs</span></a></li> -->
+        </ul>
+    </nav>
+</div>
+
+<script>
+    switch (window.location.pathname) {
+        case '/':
+            document.getElementById('index').setAttribute("class", "active")
+            break;
+        case '/project-list':
+            document.getElementById('project-list').setAttribute("class", "active")
+            break;
+        case '/project-taskboard':
+            document.getElementById('project-taskboard').setAttribute("class", "active")
+            break;
+        case '/project-todo':
+            document.getElementById('project-todo').setAttribute("class", "active")
+            break;
+        case '/app-calendar':
+            document.getElementById('app-calendar').setAttribute("class", "active")
+            break;
+        case '/app-contact':
+            document.getElementById('app-contact').setAttribute("class", "active")
+            break;
+        case '/app-setting':
+            document.getElementById('app-setting').setAttribute("class", "active")
+            break;
+        default:
+            break;
+    }
+</script>

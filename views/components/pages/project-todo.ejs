@@ -1,0 +1,270 @@
+<div class="section-body">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center">
+            <ul class="nav nav-tabs page-header-tab">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#todo-list">ToDo List</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#todo-add">Add Todo</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="section-body mt-3">
+    <div class="container-fluid">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="todo-list" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive todo_list">
+                            <table class="table table-hover table-striped table-vcenter mb-0 text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th class="w150 text-right">Due</th>
+                                        <th class="w100">Priority</th>
+                                        <th class="w80"><i class="icon-user"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i=0; i < todo_list.length; i++) { %>
+                                        <tr>
+                                            <td>
+                                                <label class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        name="<%= todo_list[i].uid %>"
+                                                        onclick="updateJob('<%= todo_list[i].uid %>')" <% if
+                                                        (todo_list[i].status) { %> checked <%}%>>
+                                                        <span class="custom-control-label">
+                                                            <%= todo_list[i].todoName %>
+                                                        </span>
+                                                </label>
+                                            </td>
+                                            <td class="text-right">
+                                                <%= todo_list[i].date.start %>
+                                            </td>
+                                            <td>
+                                                <% switch (todo_list[i].priority) { case 'High' : %>
+                                                    <span class="tag tag-danger ml-0 mr-0">
+                                                        <%= todo_list[i].priority %>
+                                                    </span>
+                                            </td>
+                                            <% break; case 'Medium' : %>
+                                                <span class="tag tag-primary ml-0 mr-0">
+                                                    <%= todo_list[i].priority %>
+                                                </span></td>
+                                                <% break; case 'None' : %>
+                                                    <span class="tag tag-secondary ml-0 mr-0">
+                                                        <%= todo_list[i].priority %>
+                                                    </span></td>
+                                                    <% break; } %>
+
+                                                        <td>
+                                                            <img src="<%= todo_list[i].owner.photoURL %>"
+                                                                data-toggle="tooltip" data-placement="top" title=""
+                                                                alt="Avatar" class="avatar"
+                                                                data-original-title="<%= todo_list[i].owner.displayName %>">
+                                                        </td>
+                                        </tr>
+                                        <% } %>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="todo-add" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Todo</h3>
+                        <div class="card-options ">
+                            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
+                                    class="fe fe-chevron-up"></i></a>
+                            <a href="#" class="card-options-remove" data-toggle="card-remove"><i
+                                    class="fe fe-x"></i></a>
+                        </div>
+                    </div>
+                    <form class="card-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Todo Name <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="todo-name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Owner <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <select class="form-control show-tick" id="owner">
+
+                                    <option value="<%= uid %>">
+                                        <%= user.displayName %>
+                                    </option>
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Priority <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <select class="form-control show-tick" id="select-priority">
+                                    <option>Select</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Select Project <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <select class="form-control show-tick" id="select-project">
+                                    <% for(var i=0; i < project_list.length; i++) { %>
+                                        <option value="<%= project_list[i].uid %>">
+                                            <%= project_list[i].projectName %>
+                                        </option>
+                                        <% } %>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Description <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <textarea id="description" rows="4" class="form-control no-resize"
+                                    placeholder="Please type what you want..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Due <span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <div class="input-daterange input-group" data-provide="datepicker">
+                                    <input type="text" class="form-control" name="start" id="date-start">
+                                    <span class="input-group-addon"> to </span>
+                                    <input type="text" class="form-control" name="end" id="date-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label"></label>
+                            <div class="col-md-7">
+                                <button type="button" id="save" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-outline-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-body">
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    Copyright © 2019 <a href="https://themeforest.net/user/admincraft/portfolio">admincraft</a>.
+                </div>
+                <div class="col-md-6 col-sm-12 text-md-right">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="../doc/index.html">Documentation</a></li>
+                        <li class="list-inline-item"><a href="javascript:void(0)">FAQ</a></li>
+                        <li class="list-inline-item"><a href="javascript:void(0)"
+                                class="btn btn-outline-primary btn-sm">Buy Now</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"></script>
+
+<script>
+
+
+
+
+    $('#save').click(function () {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            ["todoName"]: $('#todo-name').val(),
+            ["priority"]: $('#select-priority').val(),
+            ["projectId"]: $('#select-project').val(),
+            ["ownerId"]: $('#owner').val(),
+            ["description"]: $('#description').val(),
+            ["date"]: {
+                ["start"]: $('#date-start').val(),
+                ["end"]: $('#date-end').val()
+            }
+        });
+
+        console.log(raw);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("/project-todo", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                window.location.reload()
+                console.log(result)
+            })
+            .catch(error => console.log('error', error));
+
+
+        // alert('The following products are selected: ' + selectedItems);
+    });
+</script>
+
+<script>
+    function updateJob(id) {
+
+        if ($(`input[name="${id}"]`).is(':checked')) {
+            // checked
+            console.log(id, true);
+
+            putUpdate(id, true)
+        } else {
+            // unchecked
+            console.log(id, false);
+            putUpdate(id, false)
+
+        }
+
+    }
+
+    function putUpdate(id, status) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let raw = JSON.stringify({
+            ["id"]: id,
+            ["status"]: status,
+        });
+
+        var requestOptions = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("/project-todo", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                // window.location.reload()
+                console.log(result)
+            })
+            .catch(error => console.log('error', error));
+    }
+</script>

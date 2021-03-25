@@ -1,0 +1,229 @@
+<div class="section-body mt-4">
+    <div class="section-body">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="card card-profile">
+                        <div class="card-body text-center">
+                            <img class="card-profile-img" src="<%= user.photoURL %>" alt="" />
+                            <h4 class="mb-3">
+                                <%= user.displayName %>
+                            </h4>
+
+                            <p class="mb-4">
+                                <%= user.aboutMe %>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12">
+        <div class="row">
+
+
+
+        </div>
+        <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                    aria-controls="pills-profile" aria-selected="true">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-change-password-tab" data-toggle="pill" href="#pills-change-password"
+                    role="tab" aria-controls="pills-change-password" aria-selected="false">Change Password</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+
+            <div class="tab-pane fade active show" id="pills-profile" role="tabpanel"
+                aria-labelledby="pills-profile-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Profile</h3>
+                        <div class="card-options">
+                            <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i
+                                    class="fe fe-maximize"></i></a>
+                            <a href="#" class="card-options-remove" data-toggle="card-remove"><i
+                                    class="fe fe-x"></i></a>
+                            <div class="item-action dropdown ml-2">
+                                <a href="javascript:void(0)" data-toggle="dropdown"><i
+                                        class="fe fe-more-vertical"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-eye"></i> View Details </a>
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-share-alt"></i> Share </a>
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-cloud-download"></i> Download</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-copy"></i> Copy to</a>
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-folder"></i> Move to</a>
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-edit"></i> Rename</a>
+                                    <a href="javascript:void(0)" class="dropdown-item"><i
+                                            class="dropdown-icon fa fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="/update-profile" method="post">
+                        <div class="card-body">
+
+                            <div class="row clearfix">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label class="form-label">Company</label>
+                                        <input type="text" class="form-control" disabled="" placeholder="Company"
+                                            name="companyName" value="<%= user.companyName %>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" placeholder="Username"
+                                            name="displayName" value="<%= user.displayName %>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Email address</label>
+                                        <input type="email" class="form-control" placeholder="Email" name="email"
+                                            value="<%= user.email %>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" placeholder="First Name"
+                                            name="firstName" value="<%= user.firstName %>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" placeholder="Last Name" name="lastName"
+                                            value="<%= user.lastName %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" class="form-control" placeholder="Home Address"
+                                            name="address" value="<%= user.address %>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" placeholder="City" value="New York"
+                                            name="city" value="<%= user.city %>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Postal Code</label>
+                                        <input type="number" class="form-control" placeholder="ZIP Code"
+                                            name="postalCode" value="<%= user.postalCode %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label class="form-label">Country</label>
+                                        <input type="text" class="form-control" placeholder="Country" name="country"
+                                            value="<%= user.country %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">About Me</label>
+                                        <textarea rows="5" class="form-control" value="<%= user.aboutMe %>"
+                                            name="aboutMe"
+                                            placeholder="Here can be your description"><%= user.aboutMe %></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="pills-change-password" role="tabpanel"
+                aria-labelledby="pills-change-password-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Change Password</h3>
+                        <div class="card-options">
+                            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
+                                    class="fe fe-chevron-up"></i></a>
+                            <a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i
+                                    class="fe fe-maximize"></i></a>
+                            <a href="#" class="card-options-remove" data-toggle="card-remove"><i
+                                    class="fe fe-x"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row clearfix">
+
+                            <form action="/update-password" method="post" style="display: contents;">
+
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="<%= user.displayName %>"
+                                            disabled="" placeholder="Username" name="displayName">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <input type="email" id="email-change-password" class="form-control"
+                                            value="<%= user.email %>" placeholder="Email" name="email">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Phone Number"
+                                            value="<%= user.pnoneNumber %>" disabled="" name="pnoneNumber">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <hr>
+                                    <h6>Change Password</h6>
+                                    <div class="form-group">
+                                        <input type="password" id="password" class="form-control"
+                                            placeholder="Current Password" name="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="new-password" class="form-control"
+                                            placeholder="New Password" name="newPassword">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="confirm-password" class="form-control"
+                                            placeholder="Confirm New Password" name="confirmPassword">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 m-t-20 text-right">
+                                    <button type="submit" class="btn btn-primary">SAVE</button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-default">CANCEL</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

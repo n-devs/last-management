@@ -31,7 +31,7 @@ router.get('/project-taskboard', function (req, res, next) {
         const users_list = []
         const project_list = []
 
-        const  notification_list = []
+        const notification_list = []
 
         function Progress(projectId) {
 
@@ -57,17 +57,17 @@ router.get('/project-taskboard', function (req, res, next) {
               // console.log(docTodo.id, '=>', docTodo.data());
             });
 
-            if(isNaN((todoStatus.length / todoAll.length) * 100)) {
-              resolve({_progress:0,todos:todoAll.length,title:"Planned"})
-            }else{
-              if((todoStatus.length / todoAll.length) * 100 === 100) {
-                resolve({_progress:(todoStatus.length / todoAll.length) * 100,todos:todoAll.length,title:"Completed"})
-              }else{
-                resolve({_progress:(todoStatus.length / todoAll.length) * 100,todos:todoAll.length,title:"In Progress"})
+            if (isNaN((todoStatus.length / todoAll.length) * 100)) {
+              resolve({ _progress: 0, todos: todoAll.length, title: "Planned" })
+            } else {
+              if ((todoStatus.length / todoAll.length) * 100 === 100) {
+                resolve({ _progress: (todoStatus.length / todoAll.length) * 100, todos: todoAll.length, title: "Completed" })
+              } else {
+                resolve({ _progress: (todoStatus.length / todoAll.length) * 100, todos: todoAll.length, title: "In Progress" })
               }
-            
+
             }
-           
+
           })
 
         }
@@ -101,7 +101,7 @@ router.get('/project-taskboard', function (req, res, next) {
 
         });
 
-       
+
 
 
         if (!_user.exists) {
@@ -113,28 +113,42 @@ router.get('/project-taskboard', function (req, res, next) {
           // const progress = []
           const project = []
 
-          project_list.map(_project => {
-            Progress(_project.uid).then(_progress => {
-              project.push({ ..._project, ["progress"]: `${_progress._progress}`,["todos"]:_progress.todos,["title"]:_progress.title })
-              // console.log(_progress);
+          if (project_list.length === 0) {
+            res.render('project-taskboard', {
+              title: ':: To-do list :: Project Taskboard',
+              header: "Project Taskboard",
+              user: _user.data(),
+              admin: decoded.admin,
+              users_list: users_list,
+              project_list: project,
+              notification_list: notification_list
+            });
+          } else {
+            project_list.map(_project => {
+              Progress(_project.uid).then(_progress => {
+                project.push({ ..._project, ["progress"]: `${_progress._progress}`, ["todos"]: _progress.todos, ["title"]: _progress.title })
+                // console.log(_progress);
 
-              if(project.length === project_list.length) {
-                console.log(notification_list);
+                if (project.length === project_list.length) {
+                  console.log(notification_list);
 
-                res.render('project-taskboard', {
-                  title: ':: To-do list :: Project Taskboard',
-                  header: "Project Taskboard",
-                  user: _user.data(),
-                  admin: decoded.admin,
-                  users_list: users_list,
-                  project_list: project,
-                  notification_list:notification_list
-                });
-              }
+                  res.render('project-taskboard', {
+                    title: ':: To-do list :: Project Taskboard',
+                    header: "Project Taskboard",
+                    user: _user.data(),
+                    admin: decoded.admin,
+                    users_list: users_list,
+                    project_list: project,
+                    notification_list: notification_list
+                  });
+                }
+              })
             })
-          })
+          }
 
-         
+
+
+
         }
 
 

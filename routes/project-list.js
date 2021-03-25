@@ -112,26 +112,39 @@ router.get('/project-list', function (req, res, next) {
           // const progress = []
           const project = []
 
-          project_list.map(_project => {
-            Progress(_project.uid).then(_progress => {
-              project.push({ ..._project, ["progress"]: `${_progress._progress}`,["todos"]:_progress.todos })
-              // console.log(_progress);
-
-              if(project.length === project_list.length) {
-                console.log(notification_list);
-
-                res.render('project-list', {
-                  title: ':: To-do list :: Project List',
-                  header: "Project",
-                  user: _user.data(),
-                  admin: decoded.admin,
-                  users_list: users_list,
-                  project_list: project,
-                  notification_list:notification_list
-                });
-              }
+          if(project_list.length === 0) {
+            res.render('project-list', {
+              title: ':: To-do list :: Project List',
+              header: "Project",
+              user: _user.data(),
+              admin: decoded.admin,
+              users_list: users_list,
+              project_list: project,
+              notification_list:notification_list
+            });
+          }else{
+            project_list.map(_project => {
+              Progress(_project.uid).then(_progress => {
+                project.push({ ..._project, ["progress"]: `${_progress._progress}`,["todos"]:_progress.todos })
+                // console.log(_progress);
+  
+                if(project.length === project_list.length) {
+                  console.log(notification_list);
+  
+                  res.render('project-list', {
+                    title: ':: To-do list :: Project List',
+                    header: "Project",
+                    user: _user.data(),
+                    admin: decoded.admin,
+                    users_list: users_list,
+                    project_list: project,
+                    notification_list:notification_list
+                  });
+                }
+              })
             })
-          })
+          }
+        
 
          
         }

@@ -44,13 +44,7 @@
                         <%}%>
                             <form action="/login" method="post">
                                 <div class="card-title">Login to your account</div>
-                                <!-- <div class="form-group">
-                                    <select class="custom-select">
-
-                                        <option>Team Leader</option>
-                                        <option>Member</option>
-                                    </select>
-                                </div> -->
+                
                                 <div class="form-group">
                                     <input type="email" class="form-control" id="exampleInputEmail1"
                                         aria-describedby="emailHelp" placeholder="Enter email" name="email">
@@ -81,68 +75,6 @@
         </div>
         <div class="auth_right full_img"></div>
     </div>
-    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
-
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
-
-
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
-
-    <script>
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        var firebaseConfig = {
-            apiKey: "AIzaSyC2daJ4Hpsvt5T4SgZksYbRNVIvRRMClAs",
-            authDomain: "management-project-24f41.firebaseapp.com",
-            projectId: "management-project-24f41",
-            storageBucket: "management-project-24f41.appspot.com",
-            messagingSenderId: "404483039190",
-            appId: "1:404483039190:web:0ce9e5b66291e322e50e77",
-            measurementId: "G-YV1250DXB4"
-        };
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-        const db = firebase.firestore(app);
-
-        let form = document.querySelector('#bibi');
-
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // User is signed in.
-                console.log(user)
-                window.location.replace("/projecttodolist/index.html");
-            } else {
-                // No user is signed in.
-                console.log('No user is signed in.')
-            }
-        });
-
-        var email = document.getElementById("exampleInputEmail1");
-        var pass = document.getElementById("exampleInputPassword1")
-
-        firebase.auth().signInWithEmailAndPassword(email.value, password.value)
-            .then((userCredential) => {
-                // Signed in
-                var user = userCredential.user;
-
-                window.location.replace("/projecttodolist/index.html");
-                // ...
-            })
-            .catch((error) => {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-            });
-
-
-
-    </script>
 
     <script src="assets/bundles/lib.vendor.bundle.js"></script>
     <script src="assets/js/core.js"></script>

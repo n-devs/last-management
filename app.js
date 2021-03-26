@@ -1,27 +1,24 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
-var registerRouter = require('./routes/register');
-var pageProfileRouter = require('./routes/page-profile');
-var pageSearchRouter = require('./routes/page-search');
-var appContactRouter = require('./routes/app-contact');
-var appChatRouter = require('./routes/app-chat');
-var appCalendarRouter = require('./routes/app-calendar');
-var projectListRouter = require('./routes/project-list');
-var projectTaskboardRouter = require('./routes/project-taskboard');
-var projectTodoRouter = require('./routes/project-todo');
-var forgotPasswordRouter = require('./routes/forgot-password');
-var appSettingRouter = require('./routes/app-setting');
-// var isLoggedIn =require('./utils/isLoggedIn')
+const indexRouter = require('./routes/index');
+const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
+const registerRouter = require('./routes/register');
+const pageProfileRouter = require('./routes/page-profile');
+const appContactRouter = require('./routes/app-contact');
+const appChatRouter = require('./routes/app-chat');
+const appCalendarRouter = require('./routes/app-calendar');
+const projectListRouter = require('./routes/project-list');
+const projectTaskboardRouter = require('./routes/project-taskboard');
+const projectTodoRouter = require('./routes/project-todo');
+const forgotPasswordRouter = require('./routes/forgot-password');
+const appSettingRouter = require('./routes/app-setting');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,17 +31,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', [
-  indexRouter, usersRouter, loginRouter,
+  indexRouter, loginRouter,
   registerRouter, forgotPasswordRouter, pageProfileRouter,
-  logoutRouter, pageSearchRouter, appCalendarRouter,
-  appContactRouter, appChatRouter,projectListRouter,
-  projectTaskboardRouter,projectTodoRouter,appSettingRouter
+  logoutRouter, appCalendarRouter,
+  appContactRouter, appChatRouter, projectListRouter,
+  projectTaskboardRouter, projectTodoRouter, appSettingRouter
 ]);
-// app.use('/', [loginRouter,registerRouter,forgotPasswordRouter]);
-// app.use('/users', usersRouter);
-// app.use('/login', loginRouter);
-// app.use('/register', registerRouter);
-// app.use('/forgot-password', forgotPasswordRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

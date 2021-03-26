@@ -35,8 +35,6 @@
                                     </h3>
                                     <div class="card-options">
                                         <label class="custom-switch m-0">
-                                            <!-- <input type="checkbox" value="1" class="custom-switch-input" checked> -->
-                                            <!-- <span class="custom-switch-indicator"></span> -->
                                         </label>
                                         <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
                                                 class="fe fe-chevron-up"></i></a>
@@ -297,7 +295,6 @@
 
 
     function getRowSelections() {
-        // console.log($table);
         return $.map($table.bootstrapTable('getSelections'), function (row) {
             return row;
         })
@@ -347,10 +344,8 @@
             .then(response => response.text())
             .then(result => {
                 window.location.reload()
-                // console.log(result)
             })
             .catch(error => console.log('error', error));
 
-        // alert('The following products are selected: ' + selectedItems);
     });
 </script>

@@ -244,8 +244,7 @@
         fetch("/project-todo", requestOptions)
             .then(response => response.text())
             .then(result => {
-                // window.location.reload()
-                console.log(result)
+                window.location.reload()
             })
             .catch(error => console.log('error', error));
     }

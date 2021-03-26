@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const ConnectService = require('../utils/connectService')
-/* GET users listing. */
+
+/* GET login. */
 router.get('/login', function (req, res, next) {
 
   res.render('login', { title: 'Todolist Login', isvalid: false, message: "" });
@@ -10,7 +11,6 @@ router.get('/login', function (req, res, next) {
 router.post('/login', function (req, res, next) {
 
   const { email, password, check } = req.body;
-  console.log(req.body)
 
   if (typeof email === "undefined" || email === "") {
     res.render('login', { title: 'Todolist Login', isvalid: true, message: "กรุณากรอกอีเมล์" });
@@ -25,16 +25,10 @@ router.post('/login', function (req, res, next) {
       service.firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          var user = userCredential.user;
-          // console.log(userCredential);
           // ...
           res.redirect('/')
-          // res.render('index', { title: 'Todolist Login', isvalid: false, message: "", user: user });
         })
         .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.log(errorMessage);
           res.render('login', { title: 'Todolist Login', isvalid: true, message: error.message });
         });
 
@@ -47,9 +41,7 @@ router.post('/login', function (req, res, next) {
           break;
 
         default:
-          // arj.internalServerError(res, false, error.message, {
-          //     error: error.error
-          // })
+          res.render('login', { title: 'Todolist Login', isvalid: true, message: error.error });
           break;
       }
     })

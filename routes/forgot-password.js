@@ -1,15 +1,15 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const ConnectService = require('../utils/connectService')
-/* GET users listing. */
+/* GET forgot-password. */
 router.get('/forgot-password', function (req, res, next) {
 
   res.render('forgot-password', { title: 'Forgot Password', isvalid: false, message: ""  });
 })
 
+/* POST forgot-password. */
 router.post('/forgot-password', function (req, res, next) {
   const { email } = req.body;
-  // res.render('forgot-password', { title: 'Forgot Password' });
   ConnectService().then(service => {
 
     service.firebase.auth().sendPasswordResetEmail(email).then(function () {

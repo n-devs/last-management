@@ -1,9 +1,9 @@
-var express = require('express');
-var jwt_decode = require('jwt-decode');
-var router = express.Router();
+const express = require('express');
+const jwt_decode = require('jwt-decode');
+const router = express.Router();
 const ConnectService = require('../utils/connectService')
 
-/* GET home page. */
+/* GET app-setting. */
 router.get('/app-setting', function (req, res, next) {
   ConnectService().then(service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
@@ -13,7 +13,6 @@ router.get('/app-setting', function (req, res, next) {
         var uid = user.uid;
         // ...
 
-        const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const usersRef = db.collection('users').doc(uid);
         const notificationRef = db.collection('notifications')
@@ -25,12 +24,10 @@ router.get('/app-setting', function (req, res, next) {
 
         notifications.forEach(_doc => {
 
-          // console.log(progress);
           notification_list.push({ ["uid"]: _doc.id, ..._doc.data() })
        
         });
         if (!doc.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
           console.log('Document data:', doc.data());
@@ -38,7 +35,6 @@ router.get('/app-setting', function (req, res, next) {
             title: ':: To-do list:: App Settings',
             header: "Settings",
             user: doc.data(),
-            admin: decoded.admin,
             isvalid: false,
             message: "",
             notification_list:notification_list
@@ -56,6 +52,7 @@ router.get('/app-setting', function (req, res, next) {
 
 });
 
+/* POST update-password. */
 router.post('/update-password', function (req, res, next) {
   const { email, password, newPassword, confirmPassword } = req.body;
   ConnectService().then(service => {
@@ -63,23 +60,19 @@ router.post('/update-password', function (req, res, next) {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        var uid = user.uid;
+        let uid = user.uid;
         // ...
-        const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const usersRef = db.collection('users').doc(uid);
         const doc = await usersRef.get();
 
         if (!doc.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
-          // console.log('Document data:', doc.data());
 
           service.firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
               // Signed in
-              // var user = userCredential.user;
               if (newPassword === confirmPassword) {
                 service.firebase.auth().currentUser.updatePassword(newPassword).then(function () {
                   // Update successful.
@@ -87,7 +80,6 @@ router.post('/update-password', function (req, res, next) {
                     title: ':: To-do list:: App Settings',
                     header: "Settings",
                     user: doc.data(),
-                    admin: decoded.admin,
                     isvalid: false,
                     message: ""
                   });
@@ -98,7 +90,6 @@ router.post('/update-password', function (req, res, next) {
                     title: ':: To-do list:: App Settings',
                     header: "Settings",
                     user: doc.data(),
-                    admin: decoded.admin,
                     isvalid: true,
                     message: error.message
                   });
@@ -108,7 +99,6 @@ router.post('/update-password', function (req, res, next) {
                   title: ':: To-do list:: App Settings',
                   header: "Settings",
                   user: doc.data(),
-                  admin: decoded.admin,
                   isvalid: true,
                   message: "รหัสไม่ตรงกัน"
                 });
@@ -118,7 +108,6 @@ router.post('/update-password', function (req, res, next) {
                 title: ':: To-do list:: App Settings',
                 header: "Settings",
                 user: doc.data(),
-                admin: decoded.admin,
                 isvalid: true,
                 message: "รหัสไม่ถูกต้อง"
               });
@@ -138,6 +127,7 @@ router.post('/update-password', function (req, res, next) {
   })
 })
 
+/* POST update-company. */
 router.post('/update-company', function (req, res, next) {
   const { companyName, mobileNumber, email } = req.body;
 
@@ -147,7 +137,7 @@ router.post('/update-company', function (req, res, next) {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        var uid = user.uid;
+        let uid = user.uid;
         // ...
         const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
@@ -155,10 +145,8 @@ router.post('/update-company', function (req, res, next) {
         const doc = await usersRef.get();
 
         if (!doc.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
-          // console.log('Document data:', doc.data());
 
           if (companyName === '') {
             res.render('app-setting', {
@@ -189,13 +177,7 @@ router.post('/update-company', function (req, res, next) {
             });
           } else {
             await usersRef.update(req.body);
-            // res.render('app-setting', {
-            //   title: ':: To-do list:: App Settings',
-            //   header: "Settings",
-            //   user: doc.data() ,
-            //   isvalid: false,
-            //   message: ""
-            // });
+
             res.redirect("/app-setting")
           }
 

@@ -1,19 +1,17 @@
-var express = require('express');
-var jwt_decode = require('jwt-decode');
+const express = require('express');
 const generateRandomString = require('generate-random-string')
-var router = express.Router();
+const router = express.Router();
 const ConnectService = require('../utils/connectService')
 
-/* GET home page. */
+/* GET project-list. */
 router.get('/project-list', function (req, res, next) {
   ConnectService().then(service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        var uid = user.uid;
+        let uid = user.uid;
         // ...
-        const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const userRef = db.collection('users').doc(uid);
         const usersRef = db.collection('users')
@@ -37,7 +35,6 @@ router.get('/project-list', function (req, res, next) {
 
           return new Promise(async (resolve, reject) => {
             const todo = await todosRef.where('projectId', '==', projectId).get();
-            // console.log(_doc.id, '=>', _doc.data());
             const todoAll = []
             const todoStatus = []
             todo.forEach(docTodo => {
@@ -54,7 +51,6 @@ router.get('/project-list', function (req, res, next) {
                   ...docTodo.data()
                 })
               }
-              // console.log(docTodo.id, '=>', docTodo.data());
             });
 
             if (isNaN((todoStatus.length / todoAll.length) * 100)) {
@@ -72,13 +68,7 @@ router.get('/project-list', function (req, res, next) {
         }
 
         notifications.forEach(_doc => {
-
-          // console.log(progress);
           notification_list.push({ ["uid"]: _doc.id, ..._doc.data() })
-          // // ,["progress"]: (todoStatus.length / todoAll.length) *100
-          // console.log(todoStatus.length, todoAll.length, todo.length);
-
-
         });
 
         users.forEach(_doc => {
@@ -86,30 +76,17 @@ router.get('/project-list', function (req, res, next) {
             users_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["owner"]: _user.data() })
           }
 
-          // console.log(_doc.id, '=>', _doc.data());
         });
 
         projects.forEach(_doc => {
 
-
-          // console.log(progress);
           project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
-          // // ,["progress"]: (todoStatus.length / todoAll.length) *100
-          // console.log(todoStatus.length, todoAll.length, todo.length);
 
 
         });
-
-       
-
-
         if (!_user.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
-          // console.log(project_list);
-          // console.log('Document data:', users_list);
-          // const progress = []
           const project = []
 
           if(project_list.length === 0) {
@@ -117,7 +94,6 @@ router.get('/project-list', function (req, res, next) {
               title: ':: To-do list :: Project List',
               header: "Project",
               user: _user.data(),
-              admin: decoded.admin,
               users_list: users_list,
               project_list: project,
               notification_list:notification_list
@@ -126,16 +102,13 @@ router.get('/project-list', function (req, res, next) {
             project_list.map(_project => {
               Progress(_project.uid).then(_progress => {
                 project.push({ ..._project, ["progress"]: `${_progress._progress}`,["todos"]:_progress.todos })
-                // console.log(_progress);
   
                 if(project.length === project_list.length) {
-                  console.log(notification_list);
   
                   res.render('project-list', {
                     title: ':: To-do list :: Project List',
                     header: "Project",
                     user: _user.data(),
-                    admin: decoded.admin,
                     users_list: users_list,
                     project_list: project,
                     notification_list:notification_list
@@ -144,12 +117,7 @@ router.get('/project-list', function (req, res, next) {
               })
             })
           }
-        
-
-         
         }
-
-
       } else {
         // User is signed out
         // ...
@@ -160,6 +128,7 @@ router.get('/project-list', function (req, res, next) {
 
 });
 
+/* GET user-list. */
 router.get('/user-list', function (req, res, next) {
   ConnectService().then(service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
@@ -168,7 +137,6 @@ router.get('/user-list', function (req, res, next) {
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
         // ...
-        const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const userRef = db.collection('users').doc(uid);
         const usersRef = db.collection('users')
@@ -182,23 +150,11 @@ router.get('/user-list', function (req, res, next) {
           if (_doc.id !== uid) {
             users_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["owner"]: _user.data() })
           }
-
-          // console.log(_doc.id, '=>', _doc.data());
         });
 
         if (!_user.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
-          console.log('Document data:', users_list);
-          // res.render('project-list', {
-          //   title: ':: To-do list :: Project List',
-          //   header: "Project",
-          //   user: _user.data(),
-          //   admin: decoded.admin,
-          //   users_list: users_list
-
-          // });
 
           res.send(users_list)
         }
@@ -214,9 +170,8 @@ router.get('/user-list', function (req, res, next) {
 
 });
 
+/* POST project-list. */
 router.post('/project-list', function (req, res, next) {
-
-  console.log(req.body);
   ConnectService().then(service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
@@ -224,7 +179,6 @@ router.post('/project-list', function (req, res, next) {
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
         // ...
-        const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const userRef = db.collection('users').doc(uid);
         const usersRef = db.collection('users')
@@ -242,15 +196,12 @@ router.post('/project-list', function (req, res, next) {
             users_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["owner"]: _user.data() })
           }
 
-          // console.log(_doc.id, '=>', _doc.data());
         });
 
         if (!_user.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
           const newMultiFactorUserUid = generateRandomString(28)
-          // console.log('Document data1:',users_list);
           projectRef.doc(newMultiFactorUserUid).set(req.body)
           userProjectRef.doc(newMultiFactorUserUid).set(req.body)
         
@@ -266,14 +217,7 @@ router.post('/project-list', function (req, res, next) {
             });
           })
           res.send(true)
-          // res.render('project-list', {
-          //   title: ':: To-do list :: Project List',
-          //   header: "Project",
-          //   user: _user.data(),
-          //   admin: decoded.admin,
-          //   users_list: JSON.stringify(users_list)
 
-          // });
         }
 
 

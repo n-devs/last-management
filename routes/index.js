@@ -1,7 +1,5 @@
-var express = require('express');
-var jwt_decode = require('jwt-decode');
-// var isLoggedIn = require('../utils/isLoggedIn');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const ConnectService = require('../utils/connectService')
 
 /* GET home page. */
@@ -16,7 +14,6 @@ router.get('/', function (req, res, next) {
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
         // ...
-        // const decoded = jwt_decode(user._lat)
         const db = service.admin.firestore();
         const userRef = db.collection('users').doc(uid);
         const usersRef = db.collection('users')
@@ -37,10 +34,8 @@ router.get('/', function (req, res, next) {
         const notification_list = []
 
         function Progress(projectId) {
-        console.log("projectId",projectId);
           return new Promise(async (resolve, reject) => {
             const todo = await todosRef.where('projectId', '==', projectId).get();
-            // console.log(_doc.id, '=>', _doc.data());
             const todoAll = []
             const todoStatus = []
             todo.forEach(docTodo => {
@@ -57,7 +52,6 @@ router.get('/', function (req, res, next) {
                   ...docTodo.data()
                 })
               }
-              // console.log(docTodo.id, '=>', docTodo.data());
             });
 
             if (isNaN((todoStatus.length / todoAll.length) * 100)) {
@@ -91,11 +85,7 @@ router.get('/', function (req, res, next) {
           project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
         });
 
-
-
-
         if (!_user.exists) {
-          // console.log('No such document!');
           res.redirect('/login')
         } else {
 
@@ -106,7 +96,6 @@ router.get('/', function (req, res, next) {
               title: 'Project Dashboard',
               header: "Dashboard",
               user: _user.data(),
-              // admin: decoded.admin,
               users_list: users_list,
               project_list: [],
               notification_list: notification_list.length === 0 ? []:notification_list
@@ -115,17 +104,13 @@ router.get('/', function (req, res, next) {
             project_list.map(_project => {
               Progress(_project.uid).then(_progress => {
                 project.push({ ..._project, ["progress"]: `${_progress._progress}`, ["todos"]: _progress.todos, ["title"]: _progress.title })
-                // console.log(_progress);
-                console.log(5);
+
                 if (project.length === project_list.length) {
 
-                  console.log(notification_list);
-                  console.log(6);
                   res.render('index', {
                     title: 'Project Dashboard',
                     header: "Dashboard",
                     user: _user.data(),
-                    // admin: decoded.admin,
                     users_list: users_list,
                     project_list: project,
                     notification_list: notification_list

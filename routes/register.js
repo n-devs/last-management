@@ -1,16 +1,17 @@
-var express = require('express');
+const express = require('express');
 const generateRandomString = require('generate-random-string')
 const bcrypt = require('bcrypt')
-var router = express.Router();
+const router = express.Router();
 const ConnectService = require('../utils/connectService')
+
 /* GET users listing. */
 router.get('/register', function (req, res, next) {
   res.render('register', { title: 'To-do list Register', isvalid: false, message: "" });
 });
 
+/* POST register. */
 router.post('/register', function (req, res, next) {
   const { displayName, email, password, check } = req.body;
-  // console.log(req.body)
 
   if (typeof displayName === "undefined" || displayName === "") {
     res.render('register', { title: 'To-do list Register', isvalid: true, message: "กรุณากรอกชื่อ" });
@@ -27,8 +28,6 @@ router.post('/register', function (req, res, next) {
 
     const newMultiFactorUserUid = generateRandomString(28)
     const now = new Date().toUTCString()
-
-
     const data = {
       uid: newMultiFactorUserUid,
       displayName: displayName,
@@ -37,7 +36,6 @@ router.post('/register', function (req, res, next) {
       emailVerified: true,
       disabled: false,
       customClaims: { admin: true },
-      // phoneNumber: phoneNumber,
       passwordHash: Buffer.from(bcrypt.hashSync(password, 10)),
       tokensValidAfterTime: now,
       metadata: {
@@ -46,8 +44,6 @@ router.post('/register', function (req, res, next) {
         lastRefreshTime: now
       }
     }
-
-
 
     ConnectService().then(service => {
       service.firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
@@ -76,30 +72,22 @@ router.post('/register', function (req, res, next) {
             hash: {
               algorithm: 'BCRYPT'
             }
+
           }).then(results => {
             results.errors.forEach(indexedError => {
-              console.log(indexedError);
-              console.log(data);
               res.render('register', { title: 'To-do list Register error', isvalid: true, message: "error regoster" });
             })
-            console.log(3);
             const db = service.admin.firestore();
+
             db.collection('users').doc(newMultiFactorUserUid).set(data);
 
             res.render('register-completed', { title: 'Register Completed', isvalid: false, message: "" });
           }).catch(error => {
-            console.log(4);
             res.render('register', { title: 'To-do list Register error', isvalid: true, message: error.message });
           })
       })
-
-
     })
-
   }
-
-
-
 });
 
 module.exports = router;

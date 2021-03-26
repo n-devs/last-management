@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
     service.firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
 
-  
+
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
@@ -18,19 +18,19 @@ router.get('/', function (req, res, next) {
         const userRef = db.collection('users').doc(uid);
         const usersRef = db.collection('users')
         const projectRef = userRef.collection('projects')
+        const myTodolistRef = userRef.collection('todos')
         const notificationRef = db.collection('notifications')
         const todosRef = db.collection('todos')
+
         const _user = await userRef.get();
-
         const users = await usersRef.get();
-
         const projects = await projectRef.get();
-
+        const todos = await myTodolistRef.get();
         const notifications = await notificationRef.where('uid', '==', uid).get();
 
         const users_list = []
         const project_list = []
-
+        const todo_list = []
         const notification_list = []
 
         function Progress(projectId) {
@@ -58,9 +58,9 @@ router.get('/', function (req, res, next) {
               resolve({ _progress: 0, todos: todoAll.length, title: "Planned" })
             } else {
               if ((todoStatus.length / todoAll.length) * 100 === 100) {
-                resolve({ _progress: (todoStatus.length / todoAll.length) * 100, todos: todoAll.length, title: "Completed" })
+                resolve({ _progress: Math.floor((todoStatus.length / todoAll.length) * 100), todos: todoAll.length, title: "Completed" })
               } else {
-                resolve({ _progress: (todoStatus.length / todoAll.length) * 100, todos: todoAll.length, title: "In Progress" })
+                resolve({ _progress: Math.floor((todoStatus.length / todoAll.length) * 100), todos: todoAll.length, title: "In Progress" })
               }
 
             }
@@ -75,6 +75,13 @@ router.get('/', function (req, res, next) {
 
         });
 
+
+        todos.forEach(_doc => {
+
+          todo_list.push({ ["uid"]: _doc.id, ..._doc.data() })
+
+        });
+
         users.forEach(_doc => {
           if (_doc.id !== uid) {
             users_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["owner"]: _user.data() })
@@ -82,7 +89,13 @@ router.get('/', function (req, res, next) {
         });
 
         projects.forEach(_doc => {
-          project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
+          const _u = []
+          _doc.data().users.map(async _myUser => {
+            const myUser = await db.collection('users').doc(_myUser.uid).get();
+            _u.push(myUser.data())
+            //  console.log('myUser',myUser.data());
+          })
+          project_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["users"]: _u })
         });
 
         if (!_user.exists) {
@@ -91,16 +104,16 @@ router.get('/', function (req, res, next) {
 
           const project = []
 
-          if(project_list.length === 0) {
+          if (project_list.length === 0) {
             res.render('index', {
               title: 'Project Dashboard',
               header: "Dashboard",
               user: _user.data(),
               users_list: users_list,
               project_list: [],
-              notification_list: notification_list.length === 0 ? []:notification_list
+              notification_list: notification_list.length === 0 ? [] : notification_list
             });
-          }else{
+          } else {
             project_list.map(_project => {
               Progress(_project.uid).then(_progress => {
                 project.push({ ..._project, ["progress"]: `${_progress._progress}`, ["todos"]: _progress.todos, ["title"]: _progress.title })
@@ -113,13 +126,14 @@ router.get('/', function (req, res, next) {
                     user: _user.data(),
                     users_list: users_list,
                     project_list: project,
-                    notification_list: notification_list
+                    notification_list: notification_list,
+                    todo_list: todo_list
                   });
                 }
               })
             })
           }
-      
+
         }
 
       } else {

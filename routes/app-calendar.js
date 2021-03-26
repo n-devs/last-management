@@ -89,9 +89,9 @@ router.get('/todo-list', function (req, res, next) {
         if (!doc.exists) {
 
           res.redirect('/login')
-          
-        } else {
 
+        } else {
+          console.log(todo_list);
           res.send(todo_list)
         }
 

@@ -57,9 +57,9 @@ router.get('/project-taskboard', function (req, res, next) {
               resolve({ _progress: 0, todos: todoAll.length, title: "Planned" })
             } else {
               if ((todoStatus.length / todoAll.length) * 100 === 100) {
-                resolve({ _progress: (todoStatus.length / todoAll.length) * 100, todos: todoAll.length, title: "Completed" })
+                resolve({ _progress: Math.floor((todoStatus.length / todoAll.length) * 100), todos: todoAll.length, title: "Completed" })
               } else {
-                resolve({ _progress: (todoStatus.length / todoAll.length) * 100, todos: todoAll.length, title: "In Progress" })
+                resolve({ _progress: Math.floor((todoStatus.length / todoAll.length) * 100), todos: todoAll.length, title: "In Progress" })
               }
 
             }
@@ -80,7 +80,13 @@ router.get('/project-taskboard', function (req, res, next) {
         });
 
         projects.forEach(_doc => {
-          project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
+          const _u = []
+          _doc.data().users.map(async _myUser => {
+            const myUser = await db.collection('users').doc(_myUser.uid).get();
+            _u.push(myUser.data())
+            //  console.log('myUser',myUser.data());
+          })
+          project_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["users"]: _u })
         });
 
         if (!_user.exists) {

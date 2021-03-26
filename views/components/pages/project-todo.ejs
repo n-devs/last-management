@@ -19,6 +19,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
+                                        <th class="w150 text-right">Description</th>
                                         <th class="w150 text-right">Due</th>
                                         <th class="w100">Priority</th>
                                         <th class="w80"><i class="icon-user"></i></th>
@@ -36,7 +37,11 @@
                                                         <span class="custom-control-label">
                                                             <%= todo_list[i].todoName %>
                                                         </span>
+                                                        
                                                 </label>
+                                            </td>
+                                            <td class="text-left">
+                                                <%= todo_list[i].description %>
                                             </td>
                                             <td class="text-right">
                                                 <%= todo_list[i].date.start %>
@@ -83,7 +88,7 @@
                                     class="fe fe-x"></i></a>
                         </div>
                     </div>
-                    <form class="card-body">
+                    <div class="card-body">
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Todo Name <span class="text-danger">*</span></label>
                             <div class="col-md-7">
@@ -152,7 +157,7 @@
                                 <button type="submit" class="btn btn-outline-secondary">Cancel</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

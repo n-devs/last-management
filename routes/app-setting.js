@@ -65,7 +65,16 @@ router.post('/update-password', function (req, res, next) {
         const db = service.admin.firestore();
         const usersRef = db.collection('users').doc(uid);
         const doc = await usersRef.get();
+        const notificationRef = db.collection('notifications')
+        const notifications = await notificationRef.where('uid', '==', uid).get();
 
+        const  notification_list = []
+
+        notifications.forEach(_doc => {
+
+          notification_list.push({ ["uid"]: _doc.id, ..._doc.data() })
+       
+        });
         if (!doc.exists) {
           res.redirect('/login')
         } else {
@@ -81,7 +90,8 @@ router.post('/update-password', function (req, res, next) {
                     header: "Settings",
                     user: doc.data(),
                     isvalid: false,
-                    message: ""
+                    message: "",
+                    notification_list:notification_list
                   });
 
                 }).catch(function (error) {
@@ -91,7 +101,8 @@ router.post('/update-password', function (req, res, next) {
                     header: "Settings",
                     user: doc.data(),
                     isvalid: true,
-                    message: error.message
+                    message: error.message,
+                    notification_list:notification_list
                   });
                 });
               } else {
@@ -100,7 +111,8 @@ router.post('/update-password', function (req, res, next) {
                   header: "Settings",
                   user: doc.data(),
                   isvalid: true,
-                  message: "รหัสไม่ตรงกัน"
+                  message: "รหัสไม่ตรงกัน",
+                  notification_list:notification_list
                 });
               }
             }).catch((error) => {
@@ -109,7 +121,8 @@ router.post('/update-password', function (req, res, next) {
                 header: "Settings",
                 user: doc.data(),
                 isvalid: true,
-                message: "รหัสไม่ถูกต้อง"
+                message: "รหัสไม่ถูกต้อง",
+                notification_list:notification_list
               });
             })
 

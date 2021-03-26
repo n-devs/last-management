@@ -19,14 +19,14 @@ router.get('/app-chat', function (req, res, next) {
 
         const notifications = await notificationRef.where('uid', '==', uid).get();
 
-        const  notification_list = []
+        const notification_list = []
 
         notifications.forEach(_doc => {
 
           notification_list.push({ ["uid"]: _doc.id, ..._doc.data() })
-       
+
         });
-        
+
         if (!doc.exists) {
           res.redirect('/login')
         } else {
@@ -36,7 +36,7 @@ router.get('/app-chat', function (req, res, next) {
             uid: uid,
             user: doc.data(),
             service: service,
-            notification_list:notification_list
+            notification_list: notification_list
           });
         }
 
@@ -53,33 +53,31 @@ router.get('/app-chat', function (req, res, next) {
 /* POST app-chat */
 router.post('/app-chat', function (req, res, next) {
   console.log(req.body);
-  ConnectService().then(service => {
+  ConnectService().then(async service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
-      if (user) {
+      if (!user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        let uid = user.uid;
-        // ...
-        const db = service.admin.firestore();
-        const usersRef = db.collection('users').doc(uid);
-        const doc = await usersRef.get();
-        const myDataRef = service.firebase.database().ref('chat');
-
-        if (!doc.exists) {
-          res.redirect('/login')
-        } else {
-          myDataRef.push(req.body)
-          res.send(true)
-
-        }
-
-
-      } else {
-        // User is signed out
-        // ...
         res.redirect('/login')
+
       }
     });
+
+    let uid = req.body.uid;
+    // ...
+    const db = service.admin.firestore();
+    const usersRef = db.collection('users').doc(uid);
+    const doc = await usersRef.get();
+    const myDataRef = service.firebase.database().ref('chat');
+
+    if (!doc.exists) {
+      res.redirect('/login')
+    } else {
+      myDataRef.push(req.body)
+      res.send(true)
+
+    }
+
   })
 
 });

@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <form action="/update-profile" method="post">
+                    <form action="/update-profile" method="post" enctype="multipart/form-data">
                         <div class="card-body">
 
                             <div class="row clearfix">
@@ -89,6 +89,8 @@
                                         <label class="form-label">Username</label>
                                         <input type="text" class="form-control" placeholder="Username"
                                             name="displayName" value="<%= user.displayName %>">
+                                            <input type="text" class="form-control" placeholder="Username"
+                                            name="uid" value="<%= uid %>" style="display: none;">
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
@@ -148,6 +150,12 @@
                                             placeholder="Here can be your description"><%= user.aboutMe %></textarea>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">Photo</label>
+                                        <input type="file" accept="image/*" class="dropify" name="photoURL">
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -181,6 +189,8 @@
                                     <div class="form-group">
                                         <input type="text" class="form-control" value="<%= user.displayName %>"
                                             disabled="" placeholder="Username" name="displayName">
+                                            <input type="text" class="form-control"
+                                             placeholder="" name="uid" value="<%= uid %>" style="display: none;">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-12">

@@ -55,7 +55,9 @@
                                             <%= project_list[i].owner.displayName %>
                                         </div>
                                         <div class="col-5 py-1"><strong>Todos:</strong></div>
-                                        <div class="col-7 py-1"><strong><%= project_list[i].todos %></strong></div>
+                                        <div class="col-7 py-1"><strong>
+                                                <%= project_list[i].todos %>
+                                            </strong></div>
                                         <div class="col-5 py-1"><strong></strong></div>
                                         <div class="col-7 py-1"><strong></strong></div>
                                         <div class="col-5 py-1"><strong></strong></div>
@@ -78,12 +80,15 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="clearfix">
-                                        <div class="float-left"><strong><%= project_list[i].progress %>%</strong></div>
+                                        <div class="float-left"><strong>
+                                                <%= project_list[i].progress %>%
+                                            </strong></div>
                                         <div class="float-right"><small class="text-muted">Progress</small></div>
                                     </div>
                                     <div class="progress progress-xs">
-                                        <div class="progress-bar bg-red" role="progressbar" style="width: <%= project_list[i].progress %>%"
-                                            aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-red" role="progressbar"
+                                            style="width: <%= project_list[i].progress %>%" aria-valuenow="36"
+                                            aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +232,7 @@
                             <label class="col-md-3 col-form-label">Description <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-7">
-                                <textarea id="description" rows="4" class="form-control no-resize" id="detail"
+                                <textarea  rows="4" class="form-control no-resize" id="detail"
                                     placeholder="Please type what you want..."></textarea>
                             </div>
                         </div>
@@ -244,6 +249,7 @@
                                             <!-- <th data-field="photoURL" data-sortable="true">Photo</th> -->
                                             <th data-field="displayName" data-sortable="true">User Name</th>
                                             <th data-field="email" data-sortable="true">Email</th>
+                                         
                                         </tr>
                                     </thead>
 
@@ -263,7 +269,8 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label"></label>
                             <div class="col-md-7">
-                                <button id="showSelectedRows" type="button" class="btn btn-primary">Submit</button>
+                                <button id="showSelectedRows" type="button" onclick="showSelectedRows()"
+                                    class="btn btn-primary">Submit</button>
                                 <button type="submit" class="btn btn-outline-secondary">Cancel</button>
                             </div>
                         </div>
@@ -274,6 +281,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
@@ -300,7 +309,7 @@
         })
     }
 
-    $('#showSelectedRows').click(function () {
+    function showSelectedRows() {
         var $projectName = $('#projectName').val()
         var selectedRows = getRowSelections();
         var selectedItems = '\n';
@@ -317,7 +326,7 @@
             ["color"]: $('#color').val(),
             ["priority"]: $('#priority').val(),
             ["milestone"]: $('#milestone').val(),
-            ["detail"]: $('#detail').val(),
+            ["detail"]: $('textarea#detail').val(),
             ["users"]: selectedRows,
             ["owner"]: {
                 uid: selectedRows[0].owner.uid,
@@ -330,7 +339,7 @@
             }
         });
 
-        console.log(raw);
+        console.log(JSON.parse(raw));
 
         var requestOptions = {
             method: 'POST',
@@ -339,13 +348,14 @@
             redirect: 'follow'
         };
 
-       
+
         fetch(`/project-list`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                window.location.reload()
+                window.location.replace('/project-list')
             })
             .catch(error => console.log('error', error));
+    }
 
-    });
+
 </script>

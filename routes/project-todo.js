@@ -25,7 +25,7 @@ router.get('/project-todo', function (req, res, next) {
 
         const todo_list = []
         const project_list = []
-        const  notification_list = []
+        const notification_list = []
 
         notifications.forEach(_doc => {
           notification_list.push({ ["uid"]: _doc.id, ..._doc.data() })
@@ -37,7 +37,13 @@ router.get('/project-todo', function (req, res, next) {
         });
 
         projects.forEach(_doc => {
-          project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
+          const _u = []
+          _doc.data().users.map(async _myUser => {
+            const myUser = await db.collection('users').doc(_myUser.uid).get();
+            _u.push(myUser.data())
+            //  console.log('myUser',myUser.data());
+          })
+          project_list.push({ ["uid"]: _doc.id, ..._doc.data(), ["users"]: _u })
         });
 
 
@@ -51,7 +57,7 @@ router.get('/project-todo', function (req, res, next) {
             user: doc.data(),
             project_list: project_list,
             todo_list: todo_list,
-            notification_list:notification_list
+            notification_list: notification_list
           });
         }
       } else {
@@ -66,45 +72,45 @@ router.get('/project-todo', function (req, res, next) {
 
 /* POST project-todo. */
 router.post('/project-todo', function (req, res, next) {
-  ConnectService().then(service => {
+  ConnectService().then(async service => {
     service.firebase.auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        let uid = user.uid;
-        // ...
-        const db = service.admin.firestore();
-        const usersRef = db.collection('users').doc(uid);
-        const todoRef = db.collection('todos')
-        const userTodoRef = usersRef.collection('todos')
-        const doc = await usersRef.get();
-
-        const todos = await todoRef.get();
-
-        const project_list = []
-
-        req.body.status = false
-
-        todos.forEach(_doc => {
-          project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
-        });
-
-        if (!doc.exists) {
-          res.redirect('/login')
-        } else {
-          req.body.owner = doc.data()
-          const newMultiFactorUserUid = generateRandomString(28)
-          todoRef.doc(newMultiFactorUserUid).set(req.body)
-          userTodoRef.doc(newMultiFactorUserUid).set(req.body)
-          res.send(true)
-
-        }
-      } else {
-        // User is signed out
-        // ...
+      if (!user) {
         res.redirect('/login')
       }
     });
+
+  console.log(req.body);
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    let uid = req.body.ownerId;
+    // ...
+    const db = service.admin.firestore();
+    const usersRef = db.collection('users').doc(uid);
+    const todoRef = db.collection('todos')
+    const userTodoRef = usersRef.collection('todos')
+    const doc = await usersRef.get();
+
+    const todos = await todoRef.get();
+
+    const project_list = []
+
+    req.body.status = false
+
+    todos.forEach(_doc => {
+      project_list.push({ ["uid"]: _doc.id, ..._doc.data() })
+    });
+
+    if (!doc.exists) {
+      res.redirect('/login')
+    } else {
+      req.body.owner = doc.data()
+      const newMultiFactorUserUid = generateRandomString(28)
+      todoRef.doc(newMultiFactorUserUid).set(req.body)
+      userTodoRef.doc(newMultiFactorUserUid).set(req.body)
+      res.send(true)
+
+    }
+
   })
 
 });

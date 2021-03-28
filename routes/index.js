@@ -111,7 +111,8 @@ router.get('/', function (req, res, next) {
               user: _user.data(),
               users_list: users_list,
               project_list: [],
-              notification_list: notification_list.length === 0 ? [] : notification_list
+              notification_list: notification_list.length === 0 ? [] : notification_list,
+              todo_list: todo_list
             });
           } else {
             project_list.map(_project => {

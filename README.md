@@ -1,6 +1,6 @@
 # last-management
 
-** หมายเหตุ ** ติดั้ง yarn,nodejs,npm,git เพื่อใช้ในการ run project
+** หมายเหตุ ** ติดดั้ง yarn,nodejs,npm,git เพื่อใช้ในการ run project
 
 ## install package
 ```javascript

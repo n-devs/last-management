@@ -2,6 +2,14 @@
 
 ** หมายเหตุ ** ติดดั้ง yarn,nodejs,npm,git เพื่อใช้ในการ run project
 
+## clone project
+```javascript
+
+git clone https://github.com/n-devs/last-management.git
+```
+
+
+
 ## install package
 ```javascript
 yarn

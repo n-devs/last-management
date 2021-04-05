@@ -8380,7 +8380,6 @@ a:hover {
 }
 
 .auth .auth_right.full_img {
-    height: 100vh;
     background-image: url("../../project/assets/images/login.png");
     background-size: cover;
     background-repeat: no-repeat;
@@ -8394,7 +8393,7 @@ a:hover {
 }
 
 .auth .auth_right img {
-    width: 500px
+    width: 100%
 }
 
 @-webkit-keyframes pulse {
